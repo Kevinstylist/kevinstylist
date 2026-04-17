@@ -167,6 +167,15 @@
       position: relative;
       overflow: hidden;
     }
+    .hero-right::after {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        linear-gradient(to left, transparent 40%, var(--noir) 100%),
+        linear-gradient(to top, var(--noir) 0%, transparent 35%);
+      pointer-events: none;
+      z-index: 1;
+    }
 
     /* Simulated photo area with texture */
     .hero-img-placeholder {
@@ -391,6 +400,16 @@
       background:
         radial-gradient(ellipse at 40% 40%, rgba(158,145,135,0.12) 0%, transparent 70%),
         url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E");
+      z-index: 1;
+    }
+    .about-img-area::after {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        linear-gradient(to left, transparent 30%, var(--noir) 100%),
+        linear-gradient(to top, var(--noir) 0%, transparent 40%);
+      pointer-events: none;
+      z-index: 2;
     }
     .about-img-label {
       position: absolute;
