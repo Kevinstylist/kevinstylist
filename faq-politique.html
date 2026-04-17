@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FAQ & Politiques — Kevin Stylist</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --noir: #1A1A1A; --blanc: #FAFAF8; --gris: #B0B0B0;
+      --beton: #C8C4BE; --creme: #F4F1EC; --taupe: #9E9187;
+      --cormorant: 'Cormorant Garamond', serif;
+      --montserrat: 'Montserrat', sans-serif;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--noir); color: var(--blanc); font-family: var(--montserrat); font-weight: 300; overflow-x: hidden; cursor: none; }
+
+    .cursor { width: 8px; height: 8px; background: var(--blanc); border-radius: 50%; position: fixed; top:0; left:0; pointer-events:none; z-index:9999; mix-blend-mode: difference; }
+    .cursor-ring { width: 30px; height: 30px; border: 1px solid rgba(250,250,248,0.3); border-radius: 50%; position: fixed; top:0; left:0; pointer-events:none; z-index:9998; }
+
+    /* NAV */
+    nav { position: fixed; top:0; left:0; right:0; z-index:100; display: flex; justify-content: space-between; align-items: center; padding: 32px 52px; }
+    .nav-logo { font-family: var(--cormorant); font-size: 22px; font-weight: 500; letter-spacing: 0.06em; color: var(--blanc); text-decoration: none; }
+    .nav-logo em { font-style: italic; font-weight: 300; }
+    .nav-right { display: flex; align-items: center; gap: 40px; }
+    .nav-right a { font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(250,250,248,0.55); text-decoration: none; transition: color 0.3s; }
+    .nav-right a:hover { color: var(--blanc); }
+    .nav-book { padding: 11px 28px; border: 1px solid rgba(250,250,248,0.3); color: var(--blanc) !important; transition: background 0.3s !important; }
+    .nav-book:hover { background: var(--blanc); color: var(--noir) !important; }
+
+    /* PAGE HEADER */
+    .page-header { min-height: 48vh; display: flex; flex-direction: column; justify-content: flex-end; padding: 0 52px 72px; position: relative; overflow: hidden; border-bottom: 1px solid rgba(176,176,176,0.08); }
+    .header-bg-text { position: absolute; bottom: -20px; right: -10px; font-family: var(--cormorant); font-size: clamp(100px, 15vw, 180px); font-style: italic; font-weight: 300; color: rgba(255,255,255,0.025); white-space: nowrap; pointer-events: none; line-height: 1; }
+    .header-eyebrow { font-size: 9px; letter-spacing: 0.28em; text-transform: uppercase; color: var(--taupe); margin-bottom: 24px; opacity: 0; animation: fadeUp 0.7s ease 0.4s forwards; }
+    .header-title { font-family: var(--cormorant); font-size: clamp(52px, 6.5vw, 88px); font-weight: 300; line-height: 0.92; letter-spacing: -0.025em; opacity: 0; animation: fadeUp 0.9s ease 0.6s forwards; }
+    .header-title em { font-style: italic; color: var(--creme); }
+    .header-sub { margin-top: 28px; font-size: 11px; color: var(--gris); letter-spacing: 0.06em; line-height: 1.9; max-width: 460px; opacity: 0; animation: fadeUp 0.7s ease 0.8s forwards; }
+
+    /* LAYOUT */
+    .page-content { padding: 100px 52px; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+
+    /* SECTION TITLES */
+    .section-eyebrow { font-size: 9px; letter-spacing: 0.28em; text-transform: uppercase; color: var(--taupe); margin-bottom: 16px; display: flex; align-items: center; gap: 14px; }
+    .eyebrow-line { width: 24px; height: 1px; background: var(--taupe); }
+    .section-title { font-family: var(--cormorant); font-size: clamp(36px, 3.5vw, 48px); font-weight: 300; line-height: 1.1; margin-bottom: 48px; }
+    .section-title em { font-style: italic; color: var(--creme); }
+
+    /* FAQ ACCORDION */
+    .faq-list { display: flex; flex-direction: column; gap: 2px; }
+    .faq-item { background: #1f1f1d; overflow: hidden; }
+    .faq-question {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 24px 32px; cursor: none;
+      transition: background 0.3s;
+    }
+    .faq-question:hover { background: #262624; }
+    .faq-q-text { font-family: var(--cormorant); font-size: 19px; font-weight: 400; line-height: 1.3; padding-right: 20px; }
+    .faq-icon {
+      width: 20px; height: 20px; flex-shrink: 0;
+      position: relative;
+    }
+    .faq-icon::before, .faq-icon::after {
+      content: ''; position: absolute;
+      background: var(--taupe); transition: transform 0.35s ease, opacity 0.35s ease;
+    }
+    .faq-icon::before { width: 12px; height: 1px; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+    .faq-icon::after { width: 1px; height: 12px; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+    .faq-item.open .faq-icon::after { transform: translate(-50%, -50%) rotate(90deg); opacity: 0; }
+    .faq-answer {
+      max-height: 0; overflow: hidden;
+      transition: max-height 0.4s ease, padding 0.3s ease;
+      padding: 0 32px;
+    }
+    .faq-item.open .faq-answer { max-height: 300px; padding: 0 32px 28px; }
+    .faq-answer p { font-size: 12px; color: var(--gris); line-height: 2.1; letter-spacing: 0.03em; }
+    .faq-answer strong { color: var(--blanc); font-weight: 400; }
+
+    /* POLITIQUE */
+    .politique-list { display: flex; flex-direction: column; gap: 2px; }
+    .politique-item {
+      background: #1f1f1d; padding: 36px 32px;
+      position: relative; overflow: hidden;
+      transition: background 0.3s;
+    }
+    .politique-item:hover { background: #262624; }
+    .politique-item::before {
+      content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+      width: 2px; background: var(--taupe);
+      transform: scaleY(0); transform-origin: bottom;
+      transition: transform 0.35s ease;
+    }
+    .politique-item:hover::before { transform: scaleY(1); }
+    .politique-num { font-family: var(--cormorant); font-size: 11px; font-style: italic; color: var(--taupe); margin-bottom: 12px; letter-spacing: 0.1em; }
+    .politique-title { font-family: var(--cormorant); font-size: 22px; font-weight: 400; margin-bottom: 14px; color: var(--blanc); }
+    .politique-text { font-size: 11px; color: var(--gris); line-height: 2; letter-spacing: 0.03em; }
+    .politique-text strong { color: var(--blanc); font-weight: 400; }
+
+    /* CTA */
+    .section-cta { padding: 100px 52px; background: #141412; text-align: center; position: relative; overflow: hidden; }
+    .cta-bg-text { position: absolute; top:50%; left:50%; transform: translate(-50%,-50%); font-family: var(--cormorant); font-size: clamp(100px, 16vw, 200px); font-style: italic; font-weight: 300; color: rgba(255,255,255,0.025); white-space: nowrap; pointer-events: none; }
+    .cta-inner { position: relative; z-index:2; }
+    .cta-eyebrow { font-size: 9px; letter-spacing: 0.28em; text-transform: uppercase; color: var(--taupe); margin-bottom: 28px; }
+    .cta-title { font-family: var(--cormorant); font-size: clamp(40px, 5vw, 64px); font-weight: 300; line-height: 1.1; margin-bottom: 20px; }
+    .cta-title em { font-style: italic; color: var(--creme); }
+    .cta-sub { font-size: 11px; color: var(--gris); margin-bottom: 48px; line-height: 1.9; }
+    .btn-main { display: inline-flex; align-items: center; gap: 16px; padding: 18px 44px; background: var(--blanc); color: var(--noir); font-family: var(--montserrat); font-size: 10px; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; text-decoration: none; transition: background 0.3s, transform 0.3s; }
+    .btn-main:hover { background: var(--creme); transform: translateX(4px); }
+    .btn-main svg { width: 16px; transition: transform 0.3s; }
+    .btn-main:hover svg { transform: translateX(4px); }
+
+    /* FOOTER */
+    footer { padding: 56px 52px 36px; border-top: 1px solid rgba(176,176,176,0.1); display: flex; justify-content: space-between; align-items: center; }
+    .footer-logo { font-family: var(--cormorant); font-size: 18px; font-weight: 500; color: var(--blanc); letter-spacing: 0.08em; }
+    .footer-logo em { font-style: italic; font-weight: 300; }
+    .footer-links { display: flex; gap: 32px; list-style: none; }
+    .footer-links a { font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--taupe); text-decoration: none; transition: color 0.3s; }
+    .footer-links a:hover { color: var(--blanc); }
+    .footer-copy { font-size: 9px; color: rgba(176,176,176,0.3); letter-spacing: 0.08em; }
+
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.8s ease, transform 0.8s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: 0.15s; }
+
+    @keyframes fadeUp { from { opacity:0; transform: translateY(20px); } to { opacity:1; transform: translateY(0); } }
+
+    @media (max-width: 900px) {
+      nav { padding: 24px; }
+      .nav-right a:not(.nav-book) { display: none; }
+      .page-header { padding: 0 24px 56px; min-height: 42vh; }
+      .page-content { grid-template-columns: 1fr; padding: 72px 24px; gap: 64px; }
+      .section-cta { padding: 80px 24px; }
+      footer { flex-direction: column; gap: 24px; padding: 40px 24px; text-align: center; }
+      .footer-links { flex-wrap: wrap; justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+    <nav>
+    <a href="kevinstylist-index.html" class="nav-logo">K<em>.</em> Stylist</a>
+    <div class="nav-right">
+      <a href="accueil.html">Accueil</a>
+      <a href="kevinstylist-apropos.html">À propos</a>
+      <a href="kevinstylist-services.html">Services</a>
+      <a href="info.html">Info</a>
+      <a href="faq-politique.html" class="active">FAQ</a>
+      <a href="contact.html">Contact</a>
+      <a href="https://kevinmurray.setmore.com" target="_blank" class="nav-book">Réserver</a>
+    </div>
+  </nav>
+
+  <div class="page-header">
+    <div class="header-bg-text">FAQ & Politiques</div>
+    <p class="header-eyebrow">Tout ce que tu dois savoir</p>
+    <h1 class="header-title">Questions &<br><em>Politiques.</em></h1>
+    <p class="header-sub">Transparence totale sur le déroulement des services, les conditions et ce à quoi tu peux t'attendre.</p>
+  </div>
+
+  <div class="page-content">
+
+    <!-- FAQ -->
+    <div class="reveal">
+      <div class="section-eyebrow"><div class="eyebrow-line"></div>01 — Questions fréquentes</div>
+      <h2 class="section-title">Ce qu'on me<br><em>demande souvent.</em></h2>
+      <div class="faq-list">
+
+        <div class="faq-item">
+          <div class="faq-question">
+            <span class="faq-q-text">La consultation est-elle payante?</span>
+            <div class="faq-icon"></div>
+          </div>
+          <div class="faq-answer"><p>Non. La consultation est <strong>entièrement gratuite</strong> et incluse avec chaque nouveau rendez-vous. C'est une conversation honnête sur ton historique capillaire, tes objectifs et ce qui est réellement possible pour toi.</p></div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">
+            <span class="faq-q-text">Combien de temps dure un service de blond?</span>
+            <div class="faq-icon"></div>
+          </div>
+          <div class="faq-answer"><p>Un Blond Signature peut prendre entre <strong>3 et 5 heures</strong> selon ta texture, ta longueur et ton point de départ. Le temps exact est discuté lors de la consultation — jamais de surprise le jour J.</p></div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">
+            <span class="faq-q-text">Tu travailles sur cheveux bouclés?</span>
+            <div class="faq-icon"></div>
+          </div>
+          <div class="faq-answer"><p>Absolument. Je suis <strong>Curl Expert</strong> — la coloration sur cheveux bouclés demande une approche technique différente que je maîtrise. Texture, porosité et placement sont adaptés à chaque type de boucle.</p></div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">
+            <span class="faq-q-text">Comment se passe la réservation en ligne?</span>
+            <div class="faq-icon"></div>
+          </div>
+          <div class="faq-answer"><p>Tu réserves via <strong>Setmore</strong> en choisissant le service et le créneau qui te convient. Pour les nouveaux clients, une consultation est automatiquement incluse au début du rendez-vous.</p></div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">
+            <span class="faq-q-text">Quels produits sont utilisés?</span>
+            <div class="faq-icon"></div>
+          </div>
+          <div class="faq-answer"><p>J'utilise principalement les produits <strong>Evo</strong> — une gamme reconnue pour sa performance et sa conscience environnementale, dont je suis éducateur certifié. Je travaille également avec <strong>Olaplex</strong>, <strong>K18</strong> et <strong>Kevins-Kyle</strong> selon les besoins spécifiques de chaque service et chaque cheveu.</p></div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">
+            <span class="faq-q-text">Puis-je obtenir un devis avant le rendez-vous?</span>
+            <div class="faq-icon"></div>
+          </div>
+          <div class="faq-answer"><p>Oui. Envoie-moi quelques photos de tes cheveux et de ton objectif via Instagram <strong>@kevin.stylist</strong> ou le formulaire de contact — je peux te donner une fourchette de prix avant même que tu te déplaces.</p></div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">
+            <span class="faq-q-text">Est-ce que tu fais des corrections de couleur?</span>
+            <div class="faq-icon"></div>
+          </div>
+          <div class="faq-answer"><p>Oui, avec une approche honnête. Une correction peut nécessiter <strong>plusieurs rendez-vous</strong> selon le travail précédent. Je t'explique le plan complet avant de commencer — pas de promesses irréalistes.</p></div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- POLITIQUES -->
+    <div class="reveal reveal-delay-1">
+      <div class="section-eyebrow"><div class="eyebrow-line"></div>02 — Politiques</div>
+      <h2 class="section-title">Conditions &<br><em>engagements.</em></h2>
+      <div class="politique-list">
+
+        <div class="politique-item">
+          <div class="politique-num">I.</div>
+          <div class="politique-title">Annulation</div>
+          <div class="politique-text">Toute annulation doit être effectuée <strong>au minimum 48 heures</strong> avant le rendez-vous. Passé ce délai, le créneau est considéré comme utilisé. Je comprends que la vie est imprévisible — en cas de situation exceptionnelle, contacte-moi directement.</div>
+        </div>
+
+        <div class="politique-item">
+          <div class="politique-num">II.</div>
+          <div class="politique-title">No-show</div>
+          <div class="politique-text">Un rendez-vous manqué sans avis préalable affecte directement ma disponibilité et celle des autres clientes. <strong>Merci de prévenir</strong>, même à la dernière minute — un message suffit.</div>
+        </div>
+
+        <div class="politique-item">
+          <div class="politique-num">III.</div>
+          <div class="politique-title">Consultation</div>
+          <div class="politique-text">La consultation est <strong>gratuite et obligatoire</strong> pour chaque nouvelle cliente. Elle permet d'établir un plan de traitement réaliste, d'évaluer l'état du cheveu et de discuter ouvertement de ce qui est possible.</div>
+        </div>
+
+        <div class="politique-item">
+          <div class="politique-num">IV.</div>
+          <div class="politique-title">Santé du cheveu</div>
+          <div class="politique-text">Je me réserve le droit de <strong>modifier ou reporter un service</strong> si l'état du cheveu ne permet pas d'atteindre l'objectif de façon sécuritaire. La santé capillaire passe avant tout résultat esthétique.</div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- CTA -->
+  <section class="section-cta">
+    <div class="cta-bg-text">Réserver</div>
+    <div class="cta-inner">
+      <p class="cta-eyebrow reveal">D'autres questions?</p>
+      <h2 class="cta-title reveal">Écris-moi<br><em>directement.</em></h2>
+      <p class="cta-sub reveal">Je réponds personnellement à chaque message.</p>
+      <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;" class="reveal">
+        <a href="contact.html" class="btn-main">
+          Envoyer un message
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <a href="https://kevinmurray.setmore.com" target="_blank" class="btn-main" style="background:transparent;color:var(--blanc);border:1px solid rgba(250,250,248,0.35);">
+          Réserver un RDV
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+    <footer>
+    <div class="footer-logo">K<em>. Stylist</em></div>
+    <ul class="footer-links">
+      <li><a href="accueil.html">Accueil</a></li>
+      <li><a href="kevinstylist-services.html">Services</a></li>
+      <li><a href="kevinstylist-apropos.html">À propos</a></li>
+      <li><a href="info.html">Info</a></li>
+      <li><a href="faq-politique.html">FAQ</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="https://instagram.com/kevin.stylist" target="_blank">Instagram</a></li>
+      <li><a href="https://kevinmurray.setmore.com" target="_blank">Réserver</a></li>
+    </ul>
+    <p class="footer-copy">© 2026 kevinstylist.com</p>
+  </footer>
+
+  <script>
+    const cursor = document.getElementById('cursor');
+    const ring = document.getElementById('cursorRing');
+    let mx=0,my=0,rx=0,ry=0;
+    document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; cursor.style.transform=`translate(${mx-4}px,${my-4}px)`; });
+    (function animRing(){ rx+=(mx-rx)*0.12; ry+=(my-ry)*0.12; ring.style.transform=`translate(${rx-15}px,${ry-15}px)`; requestAnimationFrame(animRing); })();
+    const reveals = document.querySelectorAll('.reveal');
+    new IntersectionObserver(entries => { entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); }); }, { threshold: 0.1 }).observe ? document.querySelectorAll('.reveal').forEach(r => new IntersectionObserver(entries => entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); }), { threshold: 0.1 }).observe(r)) : null;
+
+    // FAQ Accordion
+    document.querySelectorAll('.faq-question').forEach(q => {
+      q.addEventListener('click', () => {
+        const item = q.parentElement;
+        const isOpen = item.classList.contains('open');
+        document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+        if (!isOpen) item.classList.add('open');
+      });
+    });
+  </script>
+</body>
+</html>

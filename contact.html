@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact — Kevin Stylist</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --noir: #1A1A1A;
+      --blanc: #FAFAF8;
+      --gris: #B0B0B0;
+      --beton: #C8C4BE;
+      --creme: #F4F1EC;
+      --taupe: #9E9187;
+      --cormorant: 'Cormorant Garamond', serif;
+      --montserrat: 'Montserrat', sans-serif;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--noir);
+      color: var(--blanc);
+      font-family: var(--montserrat);
+      font-weight: 300;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* CURSOR */
+    .cursor { width: 8px; height: 8px; background: var(--blanc); border-radius: 50%; position: fixed; top:0; left:0; pointer-events:none; z-index:9999; mix-blend-mode: difference; }
+    .cursor-ring { width: 30px; height: 30px; border: 1px solid rgba(250,250,248,0.3); border-radius: 50%; position: fixed; top:0; left:0; pointer-events:none; z-index:9998; }
+
+    /* NAV */
+    nav {
+      position: fixed; top:0; left:0; right:0; z-index:100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 32px 52px;
+    }
+    .nav-logo { font-family: var(--cormorant); font-size: 22px; font-weight: 500; letter-spacing: 0.06em; color: var(--blanc); text-decoration: none; }
+    .nav-logo em { font-style: italic; font-weight: 300; }
+    .nav-right { display: flex; align-items: center; gap: 40px; }
+    .nav-right a { font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(250,250,248,0.55); text-decoration: none; transition: color 0.3s; }
+    .nav-right a:hover { color: var(--blanc); }
+    .nav-right a.active { color: var(--blanc); }
+    .nav-book { padding: 11px 28px; border: 1px solid rgba(250,250,248,0.3); color: var(--blanc) !important; transition: background 0.3s !important; }
+    .nav-book:hover { background: var(--blanc); color: var(--noir) !important; }
+
+    /* PAGE HEADER */
+    .page-header {
+      min-height: 48vh;
+      display: flex; flex-direction: column;
+      justify-content: flex-end;
+      padding: 0 52px 72px;
+      position: relative; overflow: hidden;
+      border-bottom: 1px solid rgba(176,176,176,0.08);
+    }
+    .header-bg-text {
+      position: absolute; bottom: -20px; right: -10px;
+      font-family: var(--cormorant);
+      font-size: clamp(120px, 18vw, 210px);
+      font-style: italic; font-weight: 300;
+      color: rgba(255,255,255,0.025);
+      white-space: nowrap; pointer-events: none; line-height: 1;
+    }
+    .header-eyebrow {
+      font-size: 9px; letter-spacing: 0.28em; text-transform: uppercase;
+      color: var(--taupe); margin-bottom: 24px;
+      opacity: 0; animation: fadeUp 0.7s ease 0.4s forwards;
+    }
+    .header-title {
+      font-family: var(--cormorant);
+      font-size: clamp(56px, 7vw, 96px);
+      font-weight: 300; line-height: 0.92; letter-spacing: -0.025em;
+      opacity: 0; animation: fadeUp 0.9s ease 0.6s forwards;
+    }
+    .header-title em { font-style: italic; color: var(--creme); }
+    .header-sub {
+      margin-top: 28px; font-size: 11px; color: var(--gris);
+      letter-spacing: 0.06em; line-height: 1.9; max-width: 460px;
+      opacity: 0; animation: fadeUp 0.7s ease 0.8s forwards;
+    }
+
+    /* MAIN GRID */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+      padding: 100px 52px;
+    }
+
+    /* LEFT — FORMULAIRE */
+    .contact-form-wrap {
+      padding-right: 64px;
+    }
+    .form-label {
+      font-size: 9px; letter-spacing: 0.28em; text-transform: uppercase;
+      color: var(--taupe); margin-bottom: 40px; display: block;
+    }
+
+    .form-group {
+      margin-bottom: 28px; position: relative;
+    }
+    .form-group label {
+      display: block; font-size: 9px; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--taupe);
+      margin-bottom: 10px;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      background: transparent;
+      border: none; border-bottom: 1px solid rgba(176,176,176,0.2);
+      padding: 12px 0;
+      font-family: var(--montserrat); font-size: 13px; font-weight: 300;
+      color: var(--blanc); letter-spacing: 0.03em;
+      outline: none;
+      transition: border-color 0.3s;
+      appearance: none;
+    }
+    .form-group select {
+      cursor: none;
+    }
+    .form-group select option {
+      background: var(--noir); color: var(--blanc);
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-bottom-color: var(--taupe);
+    }
+    .form-group input::placeholder,
+    .form-group textarea::placeholder {
+      color: rgba(176,176,176,0.35); font-size: 12px;
+    }
+    .form-group textarea {
+      resize: none; height: 100px; line-height: 1.8;
+    }
+    .form-line {
+      position: absolute; bottom: 0; left: 0;
+      height: 1px; width: 0; background: var(--taupe);
+      transition: width 0.4s ease;
+    }
+    .form-group:focus-within .form-line { width: 100%; }
+
+    .form-submit {
+      margin-top: 44px;
+      display: inline-flex; align-items: center; gap: 16px;
+      padding: 18px 44px;
+      background: var(--blanc); color: var(--noir);
+      font-family: var(--montserrat); font-size: 10px; font-weight: 500;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      border: none; cursor: none;
+      transition: background 0.3s, transform 0.3s;
+    }
+    .form-submit:hover { background: var(--creme); transform: translateX(4px); }
+    .form-submit svg { width: 16px; transition: transform 0.3s; }
+    .form-submit:hover svg { transform: translateX(4px); }
+
+    .form-success {
+      display: none;
+      margin-top: 24px;
+      font-size: 11px; color: var(--taupe);
+      letter-spacing: 0.08em; line-height: 1.9;
+    }
+    .form-success.visible { display: block; }
+
+    /* RIGHT — INFOS */
+    .contact-info-wrap {
+      padding-left: 64px;
+      border-left: 1px solid rgba(176,176,176,0.08);
+      display: flex; flex-direction: column; gap: 56px;
+    }
+    .info-label {
+      font-size: 9px; letter-spacing: 0.28em; text-transform: uppercase;
+      color: var(--taupe); margin-bottom: 40px; display: block;
+    }
+
+    .info-block { display: flex; flex-direction: column; gap: 32px; }
+
+    .info-item {}
+    .info-item-label {
+      font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--taupe); margin-bottom: 10px;
+    }
+    .info-item-value {
+      font-family: var(--cormorant);
+      font-size: 22px; font-weight: 300; line-height: 1.4;
+      color: var(--blanc);
+    }
+    .info-item-value a {
+      color: var(--blanc); text-decoration: none;
+      transition: color 0.3s;
+    }
+    .info-item-value a:hover { color: var(--creme); }
+    .info-item-sub {
+      font-size: 10px; color: var(--taupe);
+      letter-spacing: 0.08em; margin-top: 4px;
+    }
+
+    /* Booking CTA block */
+    .info-booking {
+      background: #1f1f1d;
+      padding: 36px 32px;
+      position: relative; overflow: hidden;
+    }
+    .info-booking::after {
+      content: '';
+      position: absolute; bottom: 0; left: 0; right: 0;
+      height: 1px; background: var(--taupe);
+      transform: scaleX(0); transform-origin: left;
+      transition: transform 0.4s;
+    }
+    .info-booking:hover::after { transform: scaleX(1); }
+    .booking-label {
+      font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--taupe); margin-bottom: 16px;
+    }
+    .booking-title {
+      font-family: var(--cormorant);
+      font-size: 26px; font-weight: 300; margin-bottom: 20px;
+      line-height: 1.2;
+    }
+    .booking-title em { font-style: italic; color: var(--creme); }
+    .btn-main {
+      display: inline-flex; align-items: center; gap: 14px;
+      padding: 15px 36px;
+      background: var(--blanc); color: var(--noir);
+      font-family: var(--montserrat); font-size: 9px; font-weight: 500;
+      letter-spacing: 0.2em; text-transform: uppercase; text-decoration: none;
+      transition: background 0.3s, transform 0.3s;
+    }
+    .btn-main:hover { background: var(--creme); transform: translateX(4px); }
+    .btn-main svg { width: 14px; transition: transform 0.3s; }
+    .btn-main:hover svg { transform: translateX(4px); }
+
+    /* MAP */
+    .section-map { padding: 0; border-top: 1px solid rgba(176,176,176,0.08); }
+    .map-header { padding: 72px 52px 40px; display: flex; align-items: baseline; gap: 20px; }
+    .map-num { font-family: var(--cormorant); font-size: 14px; font-style: italic; color: var(--taupe); }
+    .map-title { font-family: var(--cormorant); font-size: clamp(32px, 3.5vw, 44px); font-weight: 300; }
+    .map-line { flex: 1; height: 1px; background: rgba(176,176,176,0.12); margin-left: 20px; }
+    .map-address { padding: 0 52px 36px; display: flex; align-items: center; justify-content: space-between; }
+    .map-address-text { font-size: 11px; color: var(--gris); letter-spacing: 0.08em; line-height: 1.9; }
+    .map-address-text strong { color: var(--blanc); font-weight: 400; }
+    .map-link { font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--taupe); text-decoration: none; transition: color 0.3s; }
+    .map-link:hover { color: var(--blanc); }
+    .map-embed { width: 100%; height: 400px; position: relative; overflow: hidden; }
+    .map-embed iframe { width: 100%; height: 100%; border: none; filter: grayscale(1) invert(1) contrast(0.85) brightness(0.85); opacity: 0.8; }
+    .map-embed::after { content: ''; position: absolute; inset: 0; pointer-events: none; box-shadow: inset 0 0 60px rgba(26,26,26,0.5); }
+
+    /* FOOTER */
+    footer { padding: 56px 52px 36px; border-top: 1px solid rgba(176,176,176,0.1); display: flex; justify-content: space-between; align-items: center; }
+    .footer-logo { font-family: var(--cormorant); font-size: 18px; font-weight: 500; color: var(--blanc); letter-spacing: 0.08em; }
+    .footer-logo em { font-style: italic; font-weight: 300; }
+    .footer-links { display: flex; gap: 32px; list-style: none; }
+    .footer-links a { font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--taupe); text-decoration: none; transition: color 0.3s; }
+    .footer-links a:hover { color: var(--blanc); }
+    .footer-copy { font-size: 9px; color: rgba(176,176,176,0.3); letter-spacing: 0.08em; }
+
+    /* REVEAL */
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.8s ease, transform 0.8s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: 0.12s; }
+    .reveal-delay-2 { transition-delay: 0.24s; }
+
+    @keyframes fadeUp { from { opacity:0; transform: translateY(20px); } to { opacity:1; transform: translateY(0); } }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      nav { padding: 24px 24px; }
+      .nav-right a:not(.nav-book) { display: none; }
+      .page-header { padding: 0 24px 56px; min-height: 42vh; }
+      .contact-grid { grid-template-columns: 1fr; padding: 72px 24px; gap: 64px; }
+      .contact-form-wrap { padding-right: 0; }
+      .contact-info-wrap { padding-left: 0; border-left: none; border-top: 1px solid rgba(176,176,176,0.08); padding-top: 56px; }
+      .map-header { padding: 56px 24px 32px; }
+      .map-address { padding: 0 24px 28px; flex-direction: column; align-items: flex-start; gap: 16px; }
+      footer { flex-direction: column; gap: 24px; padding: 40px 24px; text-align: center; }
+      .footer-links { flex-wrap: wrap; justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- NAV -->
+    <nav>
+    <a href="kevinstylist-index.html" class="nav-logo">K<em>.</em> Stylist</a>
+    <div class="nav-right">
+      <a href="accueil.html">Accueil</a>
+      <a href="kevinstylist-apropos.html">À propos</a>
+      <a href="kevinstylist-services.html">Services</a>
+      <a href="info.html">Info</a>
+      <a href="faq-politique.html">FAQ</a>
+      <a href="contact.html" class="active">Contact</a>
+      <a href="https://kevinmurray.setmore.com" target="_blank" class="nav-book">Réserver</a>
+    </div>
+  </nav>
+
+  <!-- PAGE HEADER -->
+  <div class="page-header">
+    <div class="header-bg-text">Contact</div>
+    <p class="header-eyebrow">Parlons-nous</p>
+    <h1 class="header-title">Une question?<br><em>Écris-moi.</em></h1>
+    <p class="header-sub">Pour toute question sur les services, les prix ou pour simplement en savoir plus — je réponds personnellement à chaque message.</p>
+  </div>
+
+  <!-- CONTACT GRID -->
+  <div class="contact-grid">
+
+    <!-- FORMULAIRE -->
+    <div class="contact-form-wrap reveal">
+      <span class="form-label">01 — Formulaire</span>
+      <form id="contactForm" action="https://formsubmit.co/kevin.stylist@hotmail.com" method="POST">
+        <input type="hidden" name="_subject" value="Nouveau message — kevinstylist.com">
+        <input type="hidden" name="_captcha" value="false">
+        <input type="hidden" name="_next" value="merci.html">
+        <input type="hidden" name="_template" value="table">
+
+        <div class="form-group">
+          <label>Nom</label>
+          <input type="text" name="nom" placeholder="Ton prénom et nom" required />
+          <div class="form-line"></div>
+        </div>
+
+        <div class="form-group">
+          <label>Service</label>
+          <select name="service" required>
+            <option value="" disabled selected>Quel service t'intéresse?</option>
+            <option>Blond Signature</option>
+            <option>Demi-blond Signature</option>
+            <option>Contour Lumière</option>
+            <option>Coloration sur mesure</option>
+            <option>Éclaircissement</option>
+            <option>Traitement / Rituel</option>
+            <option>Coupe</option>
+            <option>Autre / Question générale</option>
+          </select>
+          <div class="form-line"></div>
+        </div>
+
+        <div class="form-group">
+          <label>Message</label>
+          <textarea name="message" placeholder="Dis-moi ce que tu as en tête..." required></textarea>
+          <div class="form-line"></div>
+        </div>
+
+        <button type="submit" class="form-submit">
+          Envoyer le message
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </button>
+      </form>
+    </div>
+
+    <!-- INFOS -->
+    <div class="contact-info-wrap reveal reveal-delay-1">
+      <span class="info-label">02 — Infos</span>
+
+      <div class="info-block">
+        <div class="info-item">
+          <div class="info-item-label">Salon</div>
+          <div class="info-item-value">Blush Le Salon</div>
+          <div class="info-item-sub">1915 Bd Talbot, Chicoutimi, QC G7H 7Y4</div>
+        </div>
+
+        <div class="info-item">
+          <div class="info-item-label">Instagram</div>
+          <div class="info-item-value">
+            <a href="https://instagram.com/kevin.stylist" target="_blank">@kevin.stylist ↗</a>
+          </div>
+          <div class="info-item-sub">Messages ouverts</div>
+        </div>
+
+        <div class="info-item">
+          <div class="info-item-label">Éducateur</div>
+          <div class="info-item-value">Evo Pro</div>
+          <div class="info-item-sub">@evopro</div>
+        </div>
+      </div>
+
+      <div class="info-booking">
+        <div class="booking-label">Prête à réserver?</div>
+        <div class="booking-title">Réservation<br><em>en ligne.</em></div>
+        <a href="https://kevinmurray.setmore.com" target="_blank" class="btn-main">
+          Réserver maintenant
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- MAP -->
+  <section class="section-map">
+    <div class="map-header reveal">
+      <span class="map-num">03</span>
+      <h2 class="map-title">Nous trouver</h2>
+      <div class="map-line"></div>
+    </div>
+    <div class="map-address reveal reveal-delay-1">
+      <p class="map-address-text">
+        <strong>Blush Le Salon</strong><br>
+        1915 Bd Talbot, Chicoutimi<br>
+        QC G7H 7Y4
+      </p>
+      <a href="https://maps.google.com/?q=1915+Bd+Talbot+Chicoutimi+QC" target="_blank" class="map-link">Obtenir l'itinéraire ↗</a>
+    </div>
+    <div class="map-embed">
+      <iframe src="https://maps.google.com/maps?q=1915+Bd+Talbot+Chicoutimi+QC+G7H+7Y4&t=&z=15&ie=UTF8&iwloc=&output=embed" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+    <footer>
+    <div class="footer-logo">K<em>. Stylist</em></div>
+    <ul class="footer-links">
+      <li><a href="accueil.html">Accueil</a></li>
+      <li><a href="kevinstylist-services.html">Services</a></li>
+      <li><a href="kevinstylist-apropos.html">À propos</a></li>
+      <li><a href="info.html">Info</a></li>
+      <li><a href="faq-politique.html">FAQ</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="https://instagram.com/kevin.stylist" target="_blank">Instagram</a></li>
+      <li><a href="https://kevinmurray.setmore.com" target="_blank">Réserver</a></li>
+    </ul>
+    <p class="footer-copy">© 2026 kevinstylist.com</p>
+  </footer>
+
+  <script>
+    const cursor = document.getElementById('cursor');
+    const ring = document.getElementById('cursorRing');
+    let mx=0,my=0,rx=0,ry=0;
+    document.addEventListener('mousemove', e => {
+      mx=e.clientX; my=e.clientY;
+      cursor.style.transform=`translate(${mx-4}px,${my-4}px)`;
+    });
+    (function animRing(){
+      rx+=(mx-rx)*0.12; ry+=(my-ry)*0.12;
+      ring.style.transform=`translate(${rx-15}px,${ry-15}px)`;
+      requestAnimationFrame(animRing);
+    })();
+    const reveals = document.querySelectorAll('.reveal');
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.1 });
+    reveals.forEach(r => obs.observe(r));
+  </script>
+</body>
+</html>
